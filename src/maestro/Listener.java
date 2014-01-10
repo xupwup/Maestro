@@ -71,6 +71,14 @@ public class Listener extends Thread {
         } catch (IOException ex) {
             Logger.getLogger(Maestro.class.getName()).log(Level.SEVERE, null, ex);
         }
+        try {
+            in.close(); 
+            out.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Listener.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+        
         closed = true;
         if (exitOnClose) {
             Logger.getLogger(AirMessageHandler.class.getName())
