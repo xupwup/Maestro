@@ -28,6 +28,7 @@ public class Maestro {
     public static final int HEARTBEAT             = 4;
     public static final int GAMESTART             = 0;
     public static final int GAMEEND               = 1; // COULD BE WRONG
+    public static final int GAMECRASHED           = 2; // COULD BE WRONG
     
     public static final int GAMECLIENT_LAUNCHED   = 8;
     public static final int GAMECLIENT_CONNECTED  = 10;

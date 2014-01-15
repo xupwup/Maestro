@@ -37,7 +37,7 @@ public class AirMessageHandler implements MessageHandler {
         if (m.type == GAMESTART) {
             String exeLoc = exeDir + "/League Of Legends.exe";
 
-            gameListener = new Listener(Maestro.socket, new GameMessageHandler(out), false);
+            gameListener = new Listener(Maestro.socket, new GameMessageHandler(out, exeDir), false);
             gameListener.start();
             
             String command = exeLoc + " \"8393\" \"LolLauncher.exe\" \"\" \""+new String(m.data)+"\"";
@@ -80,6 +80,11 @@ public class AirMessageHandler implements MessageHandler {
         } catch (IOException ex) {
             Logger.getLogger(AirMessageHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public void onCrash() {
+        System.out.println("Air client closed unexpectedly.");
     }
 
     private class HeartBeater extends TimerTask {

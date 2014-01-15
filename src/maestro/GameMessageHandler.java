@@ -13,9 +13,11 @@ import java.util.logging.Logger;
 public class GameMessageHandler implements MessageHandler {
 
     final OutputStream toAir;
+    String exeLoc;
     
-    public GameMessageHandler(OutputStream out) {
+    public GameMessageHandler(OutputStream out, String exeLoc) {
         this.toAir = out;
+        this.exeLoc = exeLoc;
     }
     
     @Override
@@ -57,5 +59,23 @@ public class GameMessageHandler implements MessageHandler {
     @Override
     public void onConnect(Socket s) {
         Logger.getLogger(AirMessageHandler.class.getName()).log(Level.INFO, "Game connected!");
+    }
+
+    @Override
+    public void onCrash() {
+        Logger.getLogger(AirMessageHandler.class.getName()).log(Level.INFO, "Game crashed.");
+        synchronized (toAir) {
+            try {
+                toAir.write(StreamUtils.getIntBytes(16));
+                toAir.write(StreamUtils.getIntBytes(1));
+                toAir.write(StreamUtils.getIntBytes(Maestro.GAMECRASHED));
+                byte[] m = exeLoc.getBytes();
+                toAir.write(StreamUtils.getIntBytes(m.length));
+                toAir.write(m);
+                toAir.flush();
+            } catch (IOException ex) {
+                Logger.getLogger(GameMessageHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }

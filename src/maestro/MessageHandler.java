@@ -19,4 +19,6 @@ public interface MessageHandler {
      * @throws IOException 
      */
     public boolean handleMessage(Message m, OutputStream out) throws IOException;
+    
+    public void onCrash();
 }

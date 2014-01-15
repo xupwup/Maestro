@@ -69,6 +69,7 @@ public class Listener extends Thread {
                 }
             }
         } catch (IOException ex) {
+            mhl.onCrash();
             Logger.getLogger(Maestro.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
