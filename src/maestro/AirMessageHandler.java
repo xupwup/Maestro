@@ -35,17 +35,25 @@ public class AirMessageHandler implements MessageHandler {
             }
         }
         if (m.type == GAMESTART) {
-            String exeLoc = exeDir + "/League Of Legends.exe";
+            String exeLoc = exeDir + "/League of Legends.exe";
 
             gameListener = new Listener(Maestro.socket, new GameMessageHandler(out, exeDir), false);
             gameListener.start();
             
             String command = exeLoc + " \"8393\" \"LolLauncher.exe\" \"\" \""+new String(m.data)+"\"";
             Logger.getLogger(AirMessageHandler.class.getName()).log(Level.INFO, "command: {0}", command);
-            Process game = Runtime.getRuntime().exec(new String[]{
-                exeLoc, "8393", "LolLauncher.exe", "LolClient.exe", 
-                new String(m.data)}, null, new File(exeDir));
             
+            Process game;
+            
+            if(System.getProperty("os.name").equals("Linux")){
+                game = Runtime.getRuntime().exec(new String[]{
+                    "wine", exeLoc, "8393", "LolLauncher.exe", "LolClient.exe", 
+                    new String(m.data)}, null, new File(exeDir));
+            }else{
+                game = Runtime.getRuntime().exec(new String[]{
+                    exeLoc, "8393", "LolLauncher.exe", "LolClient.exe", 
+                    new String(m.data)}, null, new File(exeDir));
+            }
             new InputStreamPrinter(game.getInputStream()).start();
             new InputStreamPrinter(game.getErrorStream()).start();
             
