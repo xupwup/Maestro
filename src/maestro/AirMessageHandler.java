@@ -40,7 +40,7 @@ public class AirMessageHandler implements MessageHandler {
             gameListener = new Listener(Maestro.socket, new GameMessageHandler(out, exeDir), false);
             gameListener.start();
             
-            String command = exeLoc + " \"8393\" \"LolLauncher.exe\" \"\" \""+new String(m.data)+"\"";
+            String command = exeLoc + " \"8393\" \"LolLauncher.exe\" \"\" \""+new String(m.data)+"\" -UseRads";
             Logger.getLogger(AirMessageHandler.class.getName()).log(Level.INFO, "command: {0}", command);
             
             Process game;
@@ -48,11 +48,11 @@ public class AirMessageHandler implements MessageHandler {
             if(System.getProperty("os.name").equals("Linux")){
                 game = Runtime.getRuntime().exec(new String[]{
                     "wine", exeLoc, "8393", "LolLauncher.exe", "LolClient.exe", 
-                    new String(m.data)}, null, new File(exeDir));
+                    new String(m.data), "-UseRads"}, null, new File(exeDir));
             }else{
                 game = Runtime.getRuntime().exec(new String[]{
                     exeLoc, "8393", "LolLauncher.exe", "LolClient.exe", 
-                    new String(m.data)}, null, new File(exeDir));
+                    new String(m.data), "-UseRads"}, null, new File(exeDir));
             }
             new InputStreamPrinter(game.getInputStream()).start();
             new InputStreamPrinter(game.getErrorStream()).start();
